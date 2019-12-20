@@ -6,30 +6,35 @@ import com.mongodb.client.MongoDatabase;
 import model.DataBaseModel;
 import model.WeatherDetailsModel;
 import org.bson.Document;
+import org.apache.log4j.Logger;
 
 public class ResponseService {
 
+    private static final Logger LOGGER2 = Logger.getLogger(ResponseService.class.getSimpleName());
+
+    PropertiesService propertiesService = new PropertiesService();
+    DataBaseModel dbModel = propertiesService.getDBProperties();
+
+    MongoClient mongoClient = new MongoClient(dbModel.getHost(), dbModel.getPort());
+    MongoDatabase dbs = mongoClient.getDatabase(dbModel.getDatabase());
+    MongoCollection<Document> collection = dbs.getCollection(dbModel.getCollection());
+
     public void putWeatherDetails(WeatherDetailsModel weatherDetails) {
 
-        PropertiesService propertiesService = new PropertiesService();
-        DataBaseModel dbModel = propertiesService.getDBProperties();
+        LOGGER2.info("Start of Response");
 
         try {
-            MongoClient mongoClient = new MongoClient(dbModel.getHost(), dbModel.getPort());
-            MongoDatabase dbs = mongoClient.getDatabase(dbModel.getDatabase());
-            MongoCollection<Document> collection = dbs.getCollection(dbModel.getCollection());
-
-            System.out.println("Documents count: before " + collection.count());
-
             Document doc = new Document("response_date", weatherDetails.getResponseDate())
                     .append("response_status", weatherDetails.getResponseStatus())
                     .append("response_body", weatherDetails.getResponseBody());
             collection.insertOne(doc);
 
-            System.out.println("Documents count: after " + collection.count());
+            LOGGER2.info("Document was added. Documents in collection: " + collection.countDocuments());
 
         } catch (Exception e) {
-            System.out.println("error");
+
+            LOGGER2.error("Error! Document wasn't added.");
+
         }
     }
 }

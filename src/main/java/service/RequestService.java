@@ -6,13 +6,18 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
+import org.apache.log4j.Logger;
 
 public class RequestService {
 
+    private static final Logger LOGGER1 = Logger.getLogger(RequestService.class.getSimpleName());
+
+    WeatherDetailsModel weatherDetail = new WeatherDetailsModel();
+    StringBuilder response = new StringBuilder();
+
     public WeatherDetailsModel getWeatherDetails(String urlString) {
 
-        WeatherDetailsModel weatherDetail = new WeatherDetailsModel();
-        StringBuilder response = new StringBuilder();
+        LOGGER1.info("Start of request");
 
         try {
             URL url = new URL(urlString);
@@ -31,8 +36,10 @@ public class RequestService {
             weatherDetail.setResponseStatus(String.valueOf(con.getResponseCode()));
             weatherDetail.setResponseDate(LocalDateTime.now());
 
+            LOGGER1.info("Weather forecast was received");
+
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            LOGGER1.error("Error! Weather forecast wasn't received");
         }
 
         return weatherDetail;
