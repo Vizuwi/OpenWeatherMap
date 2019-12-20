@@ -22,7 +22,7 @@ public class RequestService {
             InputStream ip = con.getInputStream();
             BufferedReader br1 = new BufferedReader(new InputStreamReader(ip));
 
-            String responseSingle = null;
+            String responseSingle;
             while ((responseSingle = br1.readLine()) != null) {
                 response.append(responseSingle);
             }

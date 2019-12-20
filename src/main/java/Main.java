@@ -1,18 +1,28 @@
-import model.WeatherDetailsModel;
+import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
+import scheduler.WeatherReport;
 import service.PropertiesService;
-import service.RequestService;
-import service.ResponseService;
+
+
+import static org.quartz.CronScheduleBuilder.cronSchedule;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SchedulerException {
 
-        RequestService requestService = new RequestService();
-        ResponseService responseService = new ResponseService();
         PropertiesService propertiesService = new PropertiesService();
+        String cronSchedule = propertiesService.getCronSchedule();
 
-        String url = propertiesService.getUrlWithProperties();
-        WeatherDetailsModel weatherDetails = requestService.getWeatherDetails(url);
-        responseService.putWeatherDetails(weatherDetails);
+        JobDetail jobDetail = JobBuilder.newJob(WeatherReport.class).build();
+
+        CronTrigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity("trigger1", "group1")
+                .withSchedule(cronSchedule(cronSchedule))
+                .build();
+
+        Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+
+        scheduler.start();
+        scheduler.scheduleJob(jobDetail,trigger);
 
     }
 }

@@ -20,7 +20,7 @@ public class PropertiesService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        urlString = "http://api.openweathermap.org/data/2.5/forecast?q=" + properties.getProperty("city")
+        urlString = properties.getProperty("urlapi") + properties.getProperty("city")
                 + "&appid=" + properties.getProperty("key")
                 + "&units=" + properties.getProperty("units")
                 + "&mode=" + properties.getProperty("mode");
@@ -42,5 +42,19 @@ public class PropertiesService {
         dbmodel.setPort(Integer.valueOf(properties.getProperty("port")));
 
         return dbmodel;
+    }
+
+    public String getCronSchedule (){
+
+        String cronSchedule;
+        Properties properties = new Properties();
+        try {
+            InputStream is = new FileInputStream(pathFile);
+            properties.load(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        cronSchedule = properties.getProperty("cronSchedule");
+        return cronSchedule;
     }
 }

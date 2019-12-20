@@ -31,6 +31,5 @@ public class ResponseService {
         } catch (Exception e) {
             System.out.println("error");
         }
-
     }
 }
