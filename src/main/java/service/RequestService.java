@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 
 public class RequestService {
 
@@ -32,7 +33,9 @@ public class RequestService {
                 response.append(responseSingle);
             }
 
-            weatherDetail.setResponseBody(response.toString());
+            JSONObject jsonBody = new JSONObject(response.toString());
+
+            weatherDetail.setResponseBody(jsonBody);
             weatherDetail.setResponseStatus(String.valueOf(con.getResponseCode()));
             weatherDetail.setResponseDate(LocalDateTime.now());
 

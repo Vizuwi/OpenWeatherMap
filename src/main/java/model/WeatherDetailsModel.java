@@ -1,23 +1,25 @@
 package model;
 
+import org.json.JSONObject;
+
 import java.time.LocalDateTime;
 
 public class WeatherDetailsModel {
     private LocalDateTime responseDate;
     private String responseStatus;
-    private String responseBody;
+    private JSONObject responseBody;
 
     public WeatherDetailsModel() {
 
     }
 
-    public WeatherDetailsModel(LocalDateTime responseDate, String responseStatus, String responseBody) {
+    public WeatherDetailsModel(LocalDateTime responseDate, String responseStatus, JSONObject responseBody) {
         this.responseDate = responseDate;
         this.responseStatus = responseStatus;
         this.responseBody = responseBody;
     }
 
-    public void setResponseBody(String responseBody) {
+    public void setResponseBody(JSONObject responseBody) {
         this.responseBody = responseBody;
     }
 
@@ -37,7 +39,7 @@ public class WeatherDetailsModel {
         return responseStatus;
     }
 
-    public String getResponseBody() {
+    public JSONObject getResponseBody() {
         return responseBody;
     }
 

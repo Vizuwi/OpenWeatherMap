@@ -8,6 +8,7 @@ import model.WeatherDetailsModel;
 import org.bson.Document;
 import org.apache.log4j.Logger;
 
+
 public class ResponseService {
 
     private static final Logger LOGGER2 = Logger.getLogger(ResponseService.class.getSimpleName());
@@ -24,9 +25,10 @@ public class ResponseService {
         LOGGER2.info("Start of Response");
 
         try {
+
             Document doc = new Document("response_date", weatherDetails.getResponseDate())
                     .append("response_status", weatherDetails.getResponseStatus())
-                    .append("response_body", weatherDetails.getResponseBody());
+                    .append("response_body", weatherDetails.getResponseBody().toString());
             collection.insertOne(doc);
 
             LOGGER2.info("Document was added. Documents in collection: " + collection.countDocuments());
